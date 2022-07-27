@@ -15,14 +15,13 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 
-
 class UserController extends AbstractController
 {
 
     /**
      * @Route("/{reactRouting}", name="home", defaults={"reactRouting": null})
      */
-    public function index():Response
+    public function index(): Response
     {
         return $this->render('user/homepage.html.twig');
     }
@@ -30,10 +29,8 @@ class UserController extends AbstractController
     /**
      * @Route("/api/users", name="users")
      */
-    public function getUsers(EntityManagerInterface $entityManager, SerializerInterface $serializer, UserRepository $userRepository, LoggerInterface $logger,):Response
+    public function getUsers(EntityManagerInterface $entityManager, SerializerInterface $serializer, UserRepository $userRepository, LoggerInterface $logger,): Response
     {
-
-
 
         $userRepository = $entityManager->getRepository(User::class);
         $users = $userRepository->findAll();
@@ -43,8 +40,8 @@ class UserController extends AbstractController
         $serializedData = $serializer->serialize($users, 'json');
         $response = new Response($serializedData);
         /*________*/
-       $response->headers->set('Content-Type', 'application/json');
-       $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
 //       $response->setContent(json_encode($serializedData));
         /*________*/
 
