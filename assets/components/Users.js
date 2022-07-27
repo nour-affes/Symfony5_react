@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
-
+import button from "bootstrap/js/src/button";
 
 class Users extends Component {
+    removeItem (id){
+        const users = this.users.filter(u => u !== id)
+        this.setState({users:users})
+    }
+
     constructor() {
         super();
         this.state = { users:[]};
@@ -57,8 +62,11 @@ class Users extends Component {
                                             <td>{user.email}</td>
                                             <td>{user.adresse}</td>
                                             <td>{user.tel}</td>
-                                            <td> </td>
-                                        </tr>
+                                            <td>
+                                                <span style={{ color: 'red'}}><a>X</a></span>
+
+                                            </td>
+                                         </tr>
                                         ))}
 
                                     </tbody>
