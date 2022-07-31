@@ -26,38 +26,37 @@ class UserController extends AbstractController
         return $this->render('user/homepage.html.twig');
     }
 
-//    /**
-//     * @Route ("/api/users/{id}", name="remove_user", methods= {"GET", "DELETE"})
-//     * @return \Symfony\Component\HttpFoundation\JsonResponse
-//     */
-    /* public function remove($id, UserRepository $userRepository): Response
-     {
-
-         $user = $userRepository->find($id);
-         if ($user) {
-             $userRepository->remove($user, true);
-             return new Response("user deleted");
-         }
-         return new Response("user not found");
-
-     }*/
-
     /**
-     * @Route("/api/users/{id}", methods={"GET", "DELETE"}, name="users_delete")
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route ("/api/users/{id}", name="remove_user", methods= {"GET", "DELETE"})
      */
-    public function delete(int $id, UserRepository $userRepo): Response
+    public function remove($id, UserRepository $userRepository): Response
     {
 
-//        $userRepo = $entityManager->getRepository(User::class);
-        $user = $userRepo->find($id);
-        if ($user != null) {
-            $userRepo->remove($user, true);
+        $user = $userRepository->find($id);
+        if ($user) {
+            $userRepository->remove($user, true);
             return new Response("user deleted");
         }
-//        dd($id);
-        return new Response('user is not deleted');
+        return new Response("user not found");
+
     }
+
+//    /**
+//     * @Route("/api/users/{id}", methods={"GET", "DELETE"}, name="users_delete")
+//     * @return \Symfony\Component\HttpFoundation\JsonResponse
+//     */
+    /*    public function delete(int $id, UserRepository $userRepo): Response
+        {
+
+    //        $userRepo = $entityManager->getRepository(User::class);
+            $user = $userRepo->find($id);
+            if ($user != null) {
+                $userRepo->remove($user, true);
+                return new Response("user deleted");
+            }
+    //        dd($id);
+            return new Response('user is not deleted');
+        }*/
 
     /**
      * @Route("/api/users", name="users")
