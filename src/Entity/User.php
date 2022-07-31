@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -28,6 +30,14 @@ class User
 
     #[ORM\Column(length: 40, nullable: true)]
     private ?string $tel = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Possession::class)]
+    private Collection $possessions;
+
+    public function __construct()
+    {
+        $this->possessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,5 +113,35 @@ class User
             'adresse' => $this->adresse,
             'tel' => $this->tel
         ];
+    }
+
+    /**
+     * @return Collection<int, Possession>
+     */
+    public function getPossessions(): Collection
+    {
+        return $this->possessions;
+    }
+
+    public function addPossession(Possession $possession): self
+    {
+        if (!$this->possessions->contains($possession)) {
+            $this->possessions[] = $possession;
+            $possession->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePossession(Possession $possession): self
+    {
+        if ($this->possessions->removeElement($possession)) {
+            // set the owning side to null (unless already changed)
+            if ($possession->getUser() === $this) {
+                $possession->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -22,10 +22,10 @@ class Users extends Component {
     }
 
     removeUser(id) {
-        fetch(`/api/users/${id}`, {method: 'DELETE'})
-            .then(() => this.setState({status: 'Delete successful'}));
+        // fetch(`/api/users/${id}`, {method: 'DELETE'})
+        //     .then(() => this.setState({status: 'Delete successful'}));
+        axios.delete(`/api/users/${id}`, {method: 'DELETE'}).then((response) => (console.log('Deleted!!!')))
         window.location.reload(true);
-
     }
 
     render() {
