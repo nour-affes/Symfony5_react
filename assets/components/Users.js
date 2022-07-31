@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
-import button from "bootstrap/js/src/button";
 
 class Users extends Component {
-    removeItem (id){
-        const users = this.users.filter(u => u !== id)
-        this.setState({users:users})
-    }
 
     constructor() {
         super();
-        this.state = { users:[]};
-        this.state = { loading: true};
+        this.state = {users: []};
+        this.state = {loading: true};
     }
 
     componentDidMount() {
@@ -21,15 +16,22 @@ class Users extends Component {
 
     getUsers() {
         axios.get(`/api/users`).then(users => {
-            this.setState({ users: users.data})
-            this.setState({ loading: false})
+            this.setState({users: users.data})
+            this.setState({loading: false})
         })
+    }
+
+    removeUser(id) {
+        fetch(`/api/users/${id}`, {method: 'DELETE'})
+            .then(() => this.setState({status: 'Delete successful'}));
+        window.location.reload(true);
+
     }
 
     render() {
         console.log(this.state.users);
         const loading = this.state.loading;
-        return(
+        return (
             <div>
                 <section className="row-section">
                     <div className="container">
@@ -51,11 +53,11 @@ class Users extends Component {
                                         <th>Email</th>
                                         <th>Adresse</th>
                                         <th>tel</th>
-                                        <th> </th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {this.state.users.map( (user, id) =>(
+                                    {this.state.users.map((user, id) => (
                                         <tr key={id}>
                                             <td>{user.nom}</td>
                                             <td>{user.prenom}</td>
@@ -63,11 +65,16 @@ class Users extends Component {
                                             <td>{user.adresse}</td>
                                             <td>{user.tel}</td>
                                             <td>
-                                                <span style={{ color: 'red'}}><a>X</a></span>
+
+                                                <button style={{color: 'red'}}
+                                                        onClick={() => this.removeUser(user.id)
+                                                        }
+                                                >X
+                                                </button>
 
                                             </td>
-                                         </tr>
-                                        ))}
+                                        </tr>
+                                    ))}
 
                                     </tbody>
                                 </Table>
@@ -79,4 +86,5 @@ class Users extends Component {
         )
     }
 }
+
 export default Users;
